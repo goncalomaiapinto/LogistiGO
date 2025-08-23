@@ -1,0 +1,228 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/api/v1/companies":
+    get:
+      summary: list companies
+      tags:
+      - Companies
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create company
+      tags:
+      - Companies
+      parameters: []
+      responses:
+        '201':
+          description: created
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                company:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                  required:
+                  - name
+  "/api/v1/companies/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show company
+      tags:
+      - Companies
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update company
+      tags:
+      - Companies
+      parameters: []
+      responses:
+        '200':
+          description: updated
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                company:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+    delete:
+      summary: delete company
+      tags:
+      - Companies
+      responses:
+        '204':
+          description: deleted
+  "/api/v1/tasks":
+    get:
+      summary: list tasks
+      tags:
+      - Tasks
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create task
+      tags:
+      - Tasks
+      parameters: []
+      responses:
+        '201':
+          description: created
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                task:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    description:
+                      type: string
+                    user_id:
+                      type: integer
+                    company_id:
+                      type: integer
+                  required:
+                  - title
+                  - user_id
+                  - company_id
+  "/api/v1/tasks/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show task
+      tags:
+      - Tasks
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update task
+      tags:
+      - Tasks
+      parameters: []
+      responses:
+        '200':
+          description: updated
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                task:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    description:
+                      type: string
+    delete:
+      summary: delete task
+      tags:
+      - Tasks
+      responses:
+        '204':
+          description: deleted
+  "/api/v1/users":
+    get:
+      summary: list users
+      tags:
+      - Users
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create user
+      tags:
+      - Users
+      parameters: []
+      responses:
+        '201':
+          description: created
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    email:
+                      type: string
+                  required:
+                  - name
+                  - email
+  "/api/v1/users/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show user
+      tags:
+      - Users
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update user
+      tags:
+      - Users
+      parameters: []
+      responses:
+        '200':
+          description: updated
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    email:
+                      type: string
+    delete:
+      summary: delete user
+      tags:
+      - Users
+      responses:
+        '204':
+          description: deleted

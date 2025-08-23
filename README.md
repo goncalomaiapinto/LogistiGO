@@ -39,6 +39,33 @@ LogistiGO/
 
 ---
 
+## 🚀 API Endpoints
+
+API Documentation on Swagger UI:
+
+👉 [http://localhost:3000/api-docs](http://localhost:3000/api-docs)
+
+### Companies
+- `GET /api/v1/companies` → Lista todas as empresas
+- `POST /api/v1/companies` → Cria uma empresa
+- `GET /api/v1/companies/{id}` → Mostra uma empresa
+- `PUT /api/v1/companies/{id}` → Atualiza uma empresa
+- `DELETE /api/v1/companies/{id}` → Apaga uma empresa
+
+### Users
+- `GET /api/v1/users` → Lista todos os utilizadores
+- `POST /api/v1/users` → Cria um utilizador
+- `GET /api/v1/users/{id}` → Mostra um utilizador
+- `PUT /api/v1/users/{id}` → Atualiza um utilizador
+- `DELETE /api/v1/users/{id}` → Apaga um utilizador
+
+### Tasks
+- `GET /api/v1/tasks` → Lista todas as tarefas
+- `POST /api/v1/tasks` → Cria uma tarefa
+- `GET /api/v1/tasks/{id}` → Mostra uma tarefa
+- `PUT /api/v1/tasks/{id}` → Atualiza uma tarefa
+- `DELETE /api/v1/tasks/{id}` → Apaga uma tarefa
+
 ## 🚀 Getting Started (Development)
 
 ### 🔹 Prerequisites
