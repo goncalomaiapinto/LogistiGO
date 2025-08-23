@@ -1,0 +1,17 @@
+default: &default
+  adapter: sqlserver
+  host: db
+  username: sa
+  password: YourStrong!Passw0rd
+  database: logistigo_db
+  pool: 5
+  timeout: 5000
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default

@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: logistigo_db
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong!Passw0rd
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+
+  backend:
+    build: ./backend
+    container_name: logistigo_backend
+    command: bash -c "bundle install && rails db:create && rails s -b 0.0.0.0 -p 3000"
+    volumes:
+      - ./backend:/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+
+  frontend:
+    build: ./frontend
+    container_name: logistigo_frontend
+    command: ["npm", "start"]
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "5173:5173" # caso uses Vite
+    depends_on:
+      - backend
+
+volumes:
+  sqlserver_data:
