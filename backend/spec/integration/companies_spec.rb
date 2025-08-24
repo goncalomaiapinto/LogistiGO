@@ -5,16 +5,20 @@ RSpec.describe 'api/v1/companies', type: :request do
     get('list companies') do
       tags 'Companies'
       produces 'application/json'
+      security [ bearerAuth: [] ]
+
       response(200, 'successful') { run_test! }
     end
 
-    post('create company') do
+    post('create company (admin only)') do
       tags 'Companies'
       consumes 'application/json'
+      security [ bearerAuth: [] ]
       parameter name: :company, in: :body, schema: {
         type: :object,
         properties: { company: { type: :object, properties: { name: { type: :string } }, required: ['name'] } }
       }
+
       response(201, 'created') do
         let(:company) { { company: { name: 'Empresa XPTO' } } }
         run_test!
@@ -28,16 +32,19 @@ RSpec.describe 'api/v1/companies', type: :request do
     get('show company') do
       tags 'Companies'
       produces 'application/json'
+      security [ bearerAuth: [] ]
       response(200, 'successful') { run_test! }
     end
 
-    put('update company') do
+    put('update company (admin only)') do
       tags 'Companies'
       consumes 'application/json'
+      security [ bearerAuth: [] ]
       parameter name: :company, in: :body, schema: {
         type: :object,
         properties: { company: { type: :object, properties: { name: { type: :string } } } }
       }
+
       response(200, 'updated') do
         let(:id) { 1 }
         let(:company) { { company: { name: 'Empresa Atualizada' } } }
@@ -45,8 +52,9 @@ RSpec.describe 'api/v1/companies', type: :request do
       end
     end
 
-    delete('delete company') do
+    delete('delete company (admin only)') do
       tags 'Companies'
+      security [ bearerAuth: [] ]
       response(204, 'deleted') do
         let(:id) { 1 }
         run_test!

@@ -2,8 +2,9 @@ module Api
   module V1
     class CompaniesController < ApplicationController
       before_action :set_company, only: [:show, :update, :destroy]
+      before_action :authorize_admin!, only: [:create, :update, :destroy]
 
-      # GET /companies
+      # GET /api/v1/companies
       def index
         companies = Company.all
         pagy, records = pagy(companies, items: (params[:per_page] || 10))
@@ -19,31 +20,31 @@ module Api
         })
       end
 
-      # GET /companies/:id
+      # GET /api/v1/companies/:id
       def show
         render_success(@company)
       end
 
-      # POST /companies
+      # POST /api/v1/companies
       def create
         company = Company.new(company_params)
         if company.save
           render_success(company, :created)
         else
-          render_error(company.errors.full_messages)
+          render_error(company.errors.full_messages, :unprocessable_entity)
         end
       end
 
-      # PUT /companies/:id
+      # PUT /api/v1/companies/:id
       def update
         if @company.update(company_params)
           render_success(@company)
         else
-          render_error(@company.errors.full_messages)
+          render_error(@company.errors.full_messages, :unprocessable_entity)
         end
       end
 
-      # DELETE /companies/:id
+      # DELETE /api/v1/companies/:id
       def destroy
         @company.destroy
         render_success({ message: "Company deleted successfully" })
@@ -53,10 +54,18 @@ module Api
 
       def set_company
         @company = Company.find(params[:id])
+      rescue ActiveRecord::RecordNotFound
+        render_error("Company not found", :not_found)
       end
 
       def company_params
         params.require(:company).permit(:name)
+      end
+
+      def authorize_admin!
+        unless @current_user&.role == "admin"
+          render_error("Forbidden: admin role required", :forbidden)
+        end
       end
     end
   end

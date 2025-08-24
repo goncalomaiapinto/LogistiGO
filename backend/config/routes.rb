@@ -4,10 +4,17 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      post 'login', to: 'auth#login'
       resources :companies
       resources :users
-      resources :tasks
+      resources :tasks do
+        member do
+          patch :complete
+        end
+      end
+
+      post "auth/login", to: "auth#login"
+      post "auth/register", to: "auth#register"
+      post "auth/logout", to: "auth#logout"
     end
   end
 end

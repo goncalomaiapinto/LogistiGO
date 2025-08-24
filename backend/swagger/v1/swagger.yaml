@@ -3,19 +3,98 @@ openapi: 3.0.1
 info:
   title: API V1
   version: v1
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+- bearerAuth: []
 paths:
+  "/api/v1/auth/login":
+    post:
+      summary: login
+      tags:
+      - Auth
+      parameters: []
+      responses:
+        '200':
+          description: successful
+        '401':
+          description: unauthorized
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+              - email
+              - password
+  "/api/v1/auth/register":
+    post:
+      summary: register
+      tags:
+      - Auth
+      parameters: []
+      responses:
+        '201':
+          description: created
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    email:
+                      type: string
+                    password:
+                      type: string
+                    role:
+                      type: string
+                      enum:
+                      - admin
+                      - user
+                    company_id:
+                      type: integer
+                  required:
+                  - name
+                  - email
+                  - password
+  "/api/v1/auth/logout":
+    post:
+      summary: logout
+      tags:
+      - Auth
+      responses:
+        '200':
+          description: successful
   "/api/v1/companies":
     get:
       summary: list companies
       tags:
       - Companies
+      security:
+      - bearerAuth: []
       responses:
         '200':
           description: successful
     post:
-      summary: create company
+      summary: create company (admin only)
       tags:
       - Companies
+      security:
+      - bearerAuth: []
       parameters: []
       responses:
         '201':
@@ -44,13 +123,17 @@ paths:
       summary: show company
       tags:
       - Companies
+      security:
+      - bearerAuth: []
       responses:
         '200':
           description: successful
     put:
-      summary: update company
+      summary: update company (admin only)
       tags:
       - Companies
+      security:
+      - bearerAuth: []
       parameters: []
       responses:
         '200':
@@ -67,9 +150,11 @@ paths:
                     name:
                       type: string
     delete:
-      summary: delete company
+      summary: delete company (admin only)
       tags:
       - Companies
+      security:
+      - bearerAuth: []
       responses:
         '204':
           description: deleted
@@ -78,6 +163,8 @@ paths:
       summary: list tasks
       tags:
       - Tasks
+      security:
+      - bearerAuth: []
       responses:
         '200':
           description: successful
@@ -85,6 +172,8 @@ paths:
       summary: create task
       tags:
       - Tasks
+      security:
+      - bearerAuth: []
       parameters: []
       responses:
         '201':
@@ -102,14 +191,14 @@ paths:
                       type: string
                     description:
                       type: string
+                    status:
+                      type: string
                     user_id:
                       type: integer
                     company_id:
                       type: integer
                   required:
                   - title
-                  - user_id
-                  - company_id
   "/api/v1/tasks/{id}":
     parameters:
     - name: id
@@ -121,13 +210,19 @@ paths:
       summary: show task
       tags:
       - Tasks
+      security:
+      - bearerAuth: []
       responses:
         '200':
           description: successful
+        '403':
+          description: forbidden
     put:
       summary: update task
       tags:
       - Tasks
+      security:
+      - bearerAuth: []
       parameters: []
       responses:
         '200':
@@ -149,21 +244,29 @@ paths:
       summary: delete task
       tags:
       - Tasks
+      security:
+      - bearerAuth: []
       responses:
         '204':
           description: deleted
   "/api/v1/users":
     get:
-      summary: list users
+      summary: list users (admin only)
       tags:
       - Users
+      security:
+      - bearerAuth: []
       responses:
         '200':
           description: successful
+        '403':
+          description: forbidden
     post:
-      summary: create user
+      summary: create user (admin only)
       tags:
       - Users
+      security:
+      - bearerAuth: []
       parameters: []
       responses:
         '201':
@@ -181,9 +284,19 @@ paths:
                       type: string
                     email:
                       type: string
+                    password:
+                      type: string
+                    role:
+                      type: string
+                      enum:
+                      - admin
+                      - user
+                    company_id:
+                      type: integer
                   required:
                   - name
                   - email
+                  - password
   "/api/v1/users/{id}":
     parameters:
     - name: id
@@ -192,16 +305,22 @@ paths:
       schema:
         type: string
     get:
-      summary: show user
+      summary: show user (self or admin)
       tags:
       - Users
+      security:
+      - bearerAuth: []
       responses:
         '200':
           description: successful
+        '403':
+          description: forbidden
     put:
-      summary: update user
+      summary: update user (self or admin)
       tags:
       - Users
+      security:
+      - bearerAuth: []
       parameters: []
       responses:
         '200':
@@ -220,9 +339,11 @@ paths:
                     email:
                       type: string
     delete:
-      summary: delete user
+      summary: delete user (admin only)
       tags:
       - Users
+      security:
+      - bearerAuth: []
       responses:
         '204':
           description: deleted

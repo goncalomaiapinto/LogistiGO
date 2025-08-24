@@ -13,7 +13,6 @@ services:
   backend:
     build: ./backend
     container_name: logistigo_backend
-    command: bash -c "bundle install && rails db:create && rails s -b 0.0.0.0 -p 3000"
     volumes:
       - ./backend:/app
       - bundle_cache:/usr/local/bundle
@@ -25,11 +24,11 @@ services:
   frontend:
     build: ./frontend
     container_name: logistigo_frontend
-    command: ["npm", "start"]
+    command: ["npm", "run", "dev", "--", "--host"]
     volumes:
       - ./frontend:/app
     ports:
-      - "5173:5173" # caso uses Vite
+      - "5173:5173"
     depends_on:
       - backend
 
